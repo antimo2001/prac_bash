@@ -2,7 +2,7 @@
 DEBUG="fn3:fn4"
 
 function fnLogDebug {
-  RETVAL=99
+  local RETVAL=99
   if [ -n $1 ]; then
     echo $DEBUG | grep -q "$1"
     RETVAL=$?
@@ -11,15 +11,15 @@ function fnLogDebug {
 }
 
 function fn2 {
-  M="Shell Scripting is fun!"
+  local M="Shell Scripting is fun!"
   echo $M
 }
 
 fnLogDebug "fn2" && echo "...Debug: run fn2" && fn2
 
 function fn3 {
-  H=$(hostname)
-  M="This script is running on ${H}"
+  local H=$(hostname)
+  local M="This script is running on ${H}"
   echo $M
 }
 
@@ -28,7 +28,7 @@ fnLogDebug "fn3" && echo "...Debug: run fn3" && fn3
 ## -----------------------------------------------------------------------------
 ## Check if /etc/shadow file exists and check if writable
 function fn4 {
-  SHADOWF=/etc/shadow
+  local SHADOWF=/etc/shadow
   if [ -f $SHADOWF ]; then
     echo "Shadow passwords are enabled"
 
