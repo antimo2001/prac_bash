@@ -14,8 +14,11 @@ function fnLogDebug {
 ## -----------------------------------------------------------------------------
 ## Display number of files in PWD
 function fnCountFiles {
-  local COUNTFILE1=$(ls | wc -l)
-  local COUNTFILE2=$(ls -l | tail --lines=+2 | wc -l)
+  local DIR1=$1
+  test -z $DIR1 && return 1
+
+  local COUNTFILE1=$(ls ${DIR1} | wc -l)
+  local COUNTFILE2=$(ls -l ${DIR1} | tail --lines=+2 | wc -l)
 
   echo "COUNTFILE1==$COUNTFILE1"
   echo "COUNTFILE2==$COUNTFILE2"
@@ -25,15 +28,22 @@ function fnCountFiles {
   else
     echo "counts are NOT equal!!"
   fi
+
+  echo "$DIR1:"
+  echo "$COUNTFILE1"
+
+  return $COUNTFILE1
 }
 
 function fn1 {
-  fnCountFiles
+  fnCountFiles $PWD
 }
 
 function fn2 {
-  echo "NotYetImplemented"
-  return $?
+  DIRS="/etc /var /usr/bin"
+  for VAR in $DIRS; do
+    fnCountFiles $VAR
+  done
 }
 
 
