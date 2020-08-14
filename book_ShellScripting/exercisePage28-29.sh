@@ -12,13 +12,32 @@ function fnLogDebug {
 }
 
 function fn1 {
-  local MSG="Shell Scripting is fun!"
-  echo $MSG
+  local ERR_CODE=0
+  echo "This will exit with zero exit status"
+  return $ERR_CODE
+}
+
+## -----------------------------------------------------------------------------
+## Returns ERR_CODE based on which filetype is the given file
+## Reusable for Exercises 2,3
+function fnFileThing {
+  local FILE=$1
+  local ERR_CODE=2
+
+  if [ -f $FILE ]; then
+    ERR_CODE=0
+  elif [ -d $FILE ]; then
+    ERR_CODE=1
+  else
+    ERR_CODE=2
+  fi
+
+  return $ERR_CODE
 }
 
 function fn2 {
-  local H=$(hostname)
-  echo "NotYetImplemented"
+  fnFileThing $1
+  return $?
 }
 
 ## -----------------------------------------------------------------------------
