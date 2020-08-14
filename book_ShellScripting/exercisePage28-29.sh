@@ -32,6 +32,7 @@ function fnFileThing {
     ERR_CODE=2
   fi
 
+  echo "ERR_CODE is $ERR_CODE"
   return $ERR_CODE
 }
 
@@ -40,10 +41,19 @@ function fn2 {
   return $?
 }
 
-## -----------------------------------------------------------------------------
-## Check if /etc/shadow file exists and check if writable
 function fn3 {
-  echo "NotYetImplemented"
+  local ERR_CODE
+  cat /etc/shadow
+  ERR_CODE=$?
+
+  if [ $ERR_CODE -eq 0 ]; then
+    echo "cat /etc/shadow command succeeded"
+  else
+    echo "cat /etc/shadow command failed"
+    ERR_CODE=1
+  fi
+
+  return $ERR_CODE
 }
 
 fnLogDebug "fn1" && echo "...Debug: run fn1" && fn1
