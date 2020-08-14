@@ -1,29 +1,26 @@
 #!/bin/bash
-DEBUG="fn3:fn4"
+DEBUG="fn2,fn3,fn4"
 
 function fnLogDebug {
   local RETVAL=99
-  if [ -n $1 ]; then
-    echo $DEBUG | grep -q "$1"
+  local MATCH=$1
+  if [ -n $MATCH ]; then
+    echo $DEBUG | grep -q "$MATCH"
     RETVAL=$?
   fi
   return $RETVAL
 }
 
 function fn2 {
-  local M="Shell Scripting is fun!"
-  echo $M
+  local MSG="Shell Scripting is fun!"
+  echo $MSG
 }
-
-fnLogDebug "fn2" && echo "...Debug: run fn2" && fn2
 
 function fn3 {
   local H=$(hostname)
-  local M="This script is running on ${H}"
-  echo $M
+  local MSG="This script is running on ${H}"
+  echo $MSG
 }
-
-fnLogDebug "fn3" && echo "...Debug: run fn3" && fn3
 
 ## -----------------------------------------------------------------------------
 ## Check if /etc/shadow file exists and check if writable
@@ -42,4 +39,6 @@ function fn4 {
   fi
 }
 
+fnLogDebug "fn2" && echo "...Debug: run fn2" && fn2
+fnLogDebug "fn3" && echo "...Debug: run fn3" && fn3
 fnLogDebug "fn4" && echo "...Debug: run fn4" && fn4
