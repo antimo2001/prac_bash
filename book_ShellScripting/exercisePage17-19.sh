@@ -1,5 +1,5 @@
 #!/bin/bash
-DEBUG="fn4,fn5,fn6"
+DEBUG="fn7,fn6"
 
 function fnLogDebug {
   local RETVAL=99
@@ -49,12 +49,11 @@ function fn5 {
 }
 
 ## -----------------------------------------------------------------------------
-## Exercise 6
-function fn6 {
+## Reusable file function for Exercises 6,7
+function fnFileThing {
+  local FILE=$1
   local DEFAULT="Other type of file: "
   local filetype=$DEFAULT
-
-  read -p "Enter name of file or directory: " FILE
 
   if [ -f $FILE ]; then
     filetype="Regular file: ${FILE}"
@@ -62,9 +61,27 @@ function fn6 {
     filetype="Directory file: ${FILE}"
   fi
 
+  printf "$filetype\n"
   echo $filetype | tee | grep -q "[^$DEFAULT]"
-  local XCODE=$?
-  test $XCODE -eq 0 && ls -l $FILE
+  # local XCODE=$?
+  test $? -eq 0 && ls -l $FILE
+}
+
+## -----------------------------------------------------------------------------
+## Exercise 6
+function fn6 {
+  local DEFAULT="Other type of file: "
+  local filetype=$DEFAULT
+
+  read -p "Enter name of file or directory: " FILE
+
+  fnFileThing $FILE
+}
+
+## -----------------------------------------------------------------------------
+## Exercise 7
+function fn7 {
+  fnFileThing "1.txt"
 }
 
 fnLogDebug "fn2" && echo "...Debug: run fn2" && fn2
@@ -72,3 +89,4 @@ fnLogDebug "fn3" && echo "...Debug: run fn3" && fn3
 fnLogDebug "fn4" && echo "...Debug: run fn4" && fn4
 fnLogDebug "fn5" && echo "...Debug: run fn5" && fn5
 fnLogDebug "fn6" && echo "...Debug: run fn6" && fn6
+fnLogDebug "fn7" && echo "...Debug: run fn7" && fn7
