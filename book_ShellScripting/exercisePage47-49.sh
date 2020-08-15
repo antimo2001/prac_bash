@@ -1,6 +1,9 @@
 #!/bin/bash
 DEBUG="fn,fn1"
 
+## Enable shell-option to ignore errors when no globs found
+shopt -s nullglob
+
 function fnLogDebug {
   local RETVAL=99
   local MATCH=$1
@@ -15,17 +18,15 @@ function fnLogDebug {
 ## Copy all txt files and put the date in the filename
 function fnCopyTxtWithDate {
   local DIR1=$1
-  test -z "$DIR1" && echo "***param 1 is required" && return 1
+  test -z "$DIR1" && echo "...using default PWD" && DIR1=$PWD
 
   pushd .
   cd $DIR1
 
-  local files=$(ls *txt)
-  test -z "$files" && echo "***Found no txt files" && return 2
-
+  local FILES=$(ls *txt)
   local DATE=$(date +%F)
 
-  for VAR in $files; do
+  for VAR in $FILES; do
     if [ -f "$VAR" ]; then
       cp -v "$VAR" "${DATE}-${VAR}"
     fi
