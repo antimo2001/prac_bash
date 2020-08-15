@@ -1,5 +1,5 @@
 #!/bin/bash
-DEBUG="fn,fn1"
+DEBUG="fn2,fn0"
 
 function fnLogDebug {
   local RETVAL=99
@@ -17,17 +17,25 @@ function fnCopyTxtWithDate {
   local DIR1=$1
   test -z "$DIR1" && echo "...using default PWD" && DIR1=$PWD
 
+  local EXT=$2
+  test -z "$EXT" && echo "...using default txt" && EXT="txt"
+
+  local DATE=$(date +%F)
+  local PREFIX=$3
+  test -z "$PREFIX" && PREFIX=$DATE
+
+  echo "...PREFIX: $PREFIX"
+
   ## Enable shell-option to ignore errors when no globs found
   shopt -s nullglob
   pushd . |& /dev/null
   cd $DIR1
 
-  local FILES=$(ls *txt)
-  local DATE=$(date +%F)
+  local FILES=$(ls *${EXT})
 
   for VAR in $FILES; do
     if [ -f "$VAR" ]; then
-      cp -v "$VAR" "${DATE}-${VAR}"
+      cp -v "$VAR" "${PREFIX}-${VAR}"
     fi
   done
 
@@ -40,9 +48,9 @@ function fn1 {
 }
 
 function fn2 {
-  echo "NotYetImplemented"
+  fnCopyTxtWithDate $@
 }
 
 
 fnLogDebug "fn1" && echo "...Debug: run fn1" && fn1 $@
-fnLogDebug "fn2" && echo "...Debug: run fn2" && fn2
+fnLogDebug "fn2" && echo "...Debug: run fn2" && fn2 $@
