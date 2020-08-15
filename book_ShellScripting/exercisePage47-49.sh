@@ -1,9 +1,6 @@
 #!/bin/bash
 DEBUG="fn,fn1"
 
-## Enable shell-option to ignore errors when no globs found
-shopt -s nullglob
-
 function fnLogDebug {
   local RETVAL=99
   local MATCH=$1
@@ -20,7 +17,9 @@ function fnCopyTxtWithDate {
   local DIR1=$1
   test -z "$DIR1" && echo "...using default PWD" && DIR1=$PWD
 
-  pushd .
+  ## Enable shell-option to ignore errors when no globs found
+  shopt -s nullglob
+  pushd . |& /dev/null
   cd $DIR1
 
   local FILES=$(ls *txt)
@@ -32,7 +31,8 @@ function fnCopyTxtWithDate {
     fi
   done
 
-  popd
+  popd |& /dev/null
+  shopt -u nullglob
 }
 
 function fn1 {
