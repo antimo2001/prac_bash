@@ -13,7 +13,29 @@ function fnLogDebug {
 
 ## -----------------------------------------------------------------------------
 ## Copy all txt files and put the date in the filename
-function fnCopyTxtWithDate {
+function fn1 {
+  local DIR1=$1
+  test -z "$DIR1" && echo "...using default PWD" && DIR1=$PWD
+
+  ## Enable shell-option to ignore errors when no globs found
+  shopt -s nullglob
+  pushd . |& /dev/null
+  cd $DIR1
+
+  local FILES=$(ls *txt)
+  local DATE=$(date +%F)
+
+  for VAR in $FILES; do
+    if [ -f "$VAR" ]; then
+      cp -v "$VAR" "${DATE}-${VAR}"
+    fi
+  done
+
+  popd |& /dev/null
+  shopt -u nullglob
+}
+
+function fn2 {
   local DIR1=$1
   test -z "$DIR1" && echo "...using default PWD" && DIR1=$PWD
 
@@ -24,10 +46,6 @@ function fnCopyTxtWithDate {
   local PREFIX=$3
   test -z "$PREFIX" && PREFIX=$DATE
 
-  echo "...PREFIX: $PREFIX"
-
-  ## Enable shell-option to ignore errors when no globs found
-  shopt -s nullglob
   pushd . |& /dev/null
   cd $DIR1
 
@@ -40,15 +58,6 @@ function fnCopyTxtWithDate {
   done
 
   popd |& /dev/null
-  shopt -u nullglob
-}
-
-function fn1 {
-  fnCopyTxtWithDate $1
-}
-
-function fn2 {
-  fnCopyTxtWithDate $@
 }
 
 
