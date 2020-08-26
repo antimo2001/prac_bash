@@ -1,5 +1,5 @@
 #!/bin/bash
-DEBUG="fn0,fn1"
+DEBUG="fn0,fn2"
 
 function fnLogDebug {
   local RETVAL=99
@@ -38,7 +38,7 @@ function fn2 {
 
   case $ARG1 in
     start|START)
-      /tmp/sleep-sim-srv
+      /tmp/sleep-sim-srv &
       ;;
     stop|STOP)
       kill $(cat /tmp/sleep-sim-srv.pid)
